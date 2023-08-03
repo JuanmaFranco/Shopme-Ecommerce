@@ -18,9 +18,13 @@ import com.shopme.common.entity.Role;
 @Rollback(false)
 public class RoleRepositoryTests {
 
+	private final RoleRepository roleRepository;
+
 	@Autowired
-	private RoleRepository roleRepository;
-	
+	public RoleRepositoryTests(RoleRepository roleRepository) {
+		this.roleRepository = roleRepository;
+	}
+
 	@Test
 	public void testCreateFirstRole() {
 		Role roleAdmin = new Role("Admin", "Manage everything");
