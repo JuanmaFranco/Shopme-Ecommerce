@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Create New User</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 </head>
@@ -80,12 +81,15 @@
 
     <form th:action="@{/users/save}" method="post" style="max-width: 900px; margin: 0 auto" th:object="${user}" onsubmit="return checkEmailUnique(this)">
         <div class="border border-secondary rounded p-3">
+
             <!-- Email -->
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Email: </label>
                 <div class="col-sm-8">
-                    <input type="email" class="form-control" th:field="*{email}" required
-                           minlength="8" maxlength="128"/>
+                    <label>
+                        <input type="email" class="form-control" th:field="*{email}" required
+                               minlength="8" maxlength="128"/>
+                    </label>
                 </div>
             </div>
 
@@ -93,8 +97,10 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">First Name: </label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" th:field="*{firstName}" required
-                           minlength="2" maxlength="45"/>
+                    <label>
+                        <input type="text" class="form-control" th:field="*{firstName}" required
+                               minlength="2" maxlength="45"/>
+                    </label>
                 </div>
             </div>
 
@@ -102,8 +108,10 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Last Name: </label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" th:field="*{lastName}" required
-                           minlength="2" maxlength="45"/>
+                    <label>
+                        <input type="text" class="form-control" th:field="*{lastName}" required
+                               minlength="2" maxlength="45"/>
+                    </label>
                 </div>
             </div>
 
@@ -111,8 +119,10 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Password: </label>
                 <div class="col-sm-8">
-                    <input type="password" class="form-control" th:field="*{password}" required
-                           minlength="8" maxlength="20"/>
+                    <label>
+                        <input type="password" class="form-control" th:field="*{password}" required
+                               minlength="8" maxlength="20"/>
+                    </label>
                 </div>
             </div>
 
@@ -121,10 +131,12 @@
                 <label class="col-sm-4 col-form-label">Roles: </label>
                 <div class="col-sm-8">
                     <th:block th:each="role : ${roles}">
-                        <input type="checkbox" class="m-2"
-                               th:field="*{roles}"
-                               th:text="${role.name}"
-                               th:value="${role.id}">
+                        <label>
+                            <input type="checkbox" class="m-2"
+                                   th:field="*{roles}"
+                                   th:text="${role.name}"
+                                   th:value="${role.id}">
+                        </label>
                         - <small>[[${role.description}]]</small>
                         <br/>
                     </th:block>
@@ -135,7 +147,9 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Enabled: </label>
                 <div class="col-sm-8">
-                    <input type="checkbox" th:field="*{enabled}">
+                    <label>
+                        <input type="checkbox" th:field="*{enabled}">
+                    </label>
                 </div>
             </div>
 
@@ -182,10 +196,10 @@
     });
 
     function checkEmailUnique(form) {
-        url = "[[@{/users/check_email}]]";
-        userEmail = $("#email").val();
-        csrfValue = $("input[name='_csrf']").val();
-        params = {email: userEmail, _csrf: csrfValue}
+        let url = "[[@{/users/check_email}]]";
+        let userEmail = $("#email").val();
+        let csrfValue = $("input[name='_csrf']").val();
+        let params = {email: userEmail, _csrf: csrfValue}
 
         $.post(url, params, function (response) {
             if (response === "OK") {
