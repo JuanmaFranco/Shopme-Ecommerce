@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,10 +96,19 @@ public class UserRepositoryTests {
 
     @Test
     public void testDeleteUser() {
-        Integer id = 2;
+        Integer id = 11;
         userRepository.deleteById(id);
 
         Optional<User> user = userRepository.findById(2);
         assertThat(user).isNotPresent();
     }
+
+    @Test
+    public void testGetUserByEmail() {
+        String email = "juanmartin_franco@outlook.com";
+        User user = userRepository.getUserByEmail(email);
+        assertThat(user).isNotNull();
+    }
+
+
 }
