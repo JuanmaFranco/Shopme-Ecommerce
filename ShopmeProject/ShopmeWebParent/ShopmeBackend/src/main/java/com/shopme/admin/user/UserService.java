@@ -7,6 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -31,7 +34,19 @@ public class UserService {
     }
 
     public void save(User user) {
-        encodePassword(user);
+        boolean isUpdatingUser = (user.getId() != null);
+
+        if(isUpdatingUser) {
+            User existingUser = userRepository.findById(user.getId()).get();
+            if (existingUser.getPassword().isEmpty()) {
+                user.setPassword(existingUser.getPassword()); // don't update the password
+            } else {
+                encodePassword(user); // update the password
+            }
+        } else {
+            encodePassword(user);  // new user
+        }
+
         userRepository.save(user);
     }
 
@@ -40,9 +55,32 @@ public class UserService {
         user.setPassword(encodedPassword);
     }
 
-    public boolean isEmailUnique(String email) {
+    public boolean isEmailUnique(Integer id, String email) {
         User userByEmail = userRepository.getUserByEmail(email);
-        return userByEmail == null; // if null, email is unique
+        if (userByEmail == null) {
+            return true;   // email not found? --> email is unique
+        }
+
+        boolean isCreatingNew = (id == null);  // id == null? creating new, else editing
+
+        if (isCreatingNew) {  // creating new
+            if (userByEmail != null) {
+                return false;
+            }
+        } else {             // editing
+            if (!Objects.equals(userByEmail.getId(), id)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
+    public User get(Integer id) throws UserNotFoundException {
+        try {
+            return userRepository.findById(id).get();
+        } catch (NoSuchElementException noSuchElementException) {
+            throw new UserNotFoundException("Could not find any user with id: " + id);
+        }
+    }
 }
