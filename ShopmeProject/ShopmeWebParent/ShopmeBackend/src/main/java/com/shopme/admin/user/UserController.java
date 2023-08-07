@@ -29,7 +29,6 @@ public class UserController {
         return "users";
     }
 
-
     @GetMapping("/users/new")
     public String createNewUser(Model model) {
         List<Role> roles = userService.listRoles();
@@ -48,7 +47,6 @@ public class UserController {
         return "redirect:/users";
     }
 
-
     @GetMapping("/users/edit/{id}")
     public String editUser(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
         try {
@@ -64,4 +62,15 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            userService.delete(id);
+            redirectAttributes.addFlashAttribute("message",
+                    "The user with id: " + id + " has been deleted successfully.");
+        } catch (UserNotFoundException e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
+        return "redirect:/users";
+    }
 }
