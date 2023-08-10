@@ -17,3 +17,8 @@
 *.icon-red {
     color: red;
 }
+
+.photos {
+    width: 100px;
+    height: 100px;
+}
