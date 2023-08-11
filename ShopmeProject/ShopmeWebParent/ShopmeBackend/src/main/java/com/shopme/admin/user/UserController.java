@@ -31,12 +31,18 @@ public class UserController {
 
     @GetMapping("/users")
     public String listFirstPage(Model model) {
-        return listByPage(1, model);
+        return listByPage(1, model, "firstName", "asc");
     }
 
     @GetMapping("/users/page/{pageNum}")
-    public String listByPage(@PathVariable("pageNum") int pageNum, Model model) {
-        Page<User> page = userService.listByPage(pageNum);
+    public String listByPage(@PathVariable("pageNum") int pageNum, Model model,
+                             @RequestParam("sortField") String sortField,
+                             @RequestParam("sortDir") String sortDir) {
+
+        System.out.println("Sort field --> " + sortField);
+        System.out.println("Sort dir --> " + sortDir);
+
+        Page<User> page = userService.listByPage(pageNum, sortField, sortDir);
         List<User> users = page.getContent();
 
         long startCount = (long) (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
@@ -46,12 +52,17 @@ public class UserController {
             endCount = page.getTotalElements();
         }
 
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
         model.addAttribute("startCount", startCount);
         model.addAttribute("endCount", endCount);
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("users", users);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
 
         return "users";
     }
@@ -72,7 +83,7 @@ public class UserController {
                            @RequestParam("image") MultipartFile multipartFile) throws IOException {
 
         if (!multipartFile.isEmpty()) {
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
             user.setPhotos(fileName);
             User savedUser = userService.save(user);
 
