@@ -77,8 +77,10 @@
     </div>
 
     <div>
-        <h2>Manage Users</h2>
+        <h2 class="mt-2">Manage Users</h2>
         <a th:href="@{/users/new}">Create New User</a>
+        &nbsp;|&nbsp;
+        <a th:href="@{/users/export/csv}">Export to CSV</a>
     </div>
 
     <div th:if="${message != null}" class="alert alert-success text-center">
