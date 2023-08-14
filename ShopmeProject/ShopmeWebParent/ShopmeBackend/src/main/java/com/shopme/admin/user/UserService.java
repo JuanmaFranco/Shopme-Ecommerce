@@ -54,7 +54,7 @@ public class UserService {
     public User save(User user) {
         boolean isUpdatingUser = (user.getId() != null);
 
-        if(isUpdatingUser) {
+        if (isUpdatingUser) {
             User existingUser = userRepository.findById(user.getId()).get();
             if (existingUser.getPassword().isEmpty()) {
                 user.setPassword(existingUser.getPassword()); // don't update the password
