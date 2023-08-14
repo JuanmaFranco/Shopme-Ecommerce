@@ -14,20 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
-public class UserCsvExporter {
+public class UserCsvExporter extends AbstractExporter {
 
     public void export(List<User> users, HttpServletResponse response) throws IOException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-        LocalDateTime date = LocalDateTime.now();
-        String timeStamp = date.format(formatter);
-
-        String fileName = "users_" + timeStamp + ".csv";
-
-        response.setContentType("text/csv");
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; fileName=" + fileName;
-        response.setHeader(headerKey, headerValue);
+        super.setResponseHeader(response, "text/csv", ".csv");
 
         ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 

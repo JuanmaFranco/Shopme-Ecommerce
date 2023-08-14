@@ -153,7 +153,13 @@ public class UserController {
         exporter.export(users, response);
     }
 
+    @GetMapping("/users/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        List<User> users = userService.listAll();
 
+        UserExcelExporter exporter = new UserExcelExporter();
+        exporter.export(users, response);
+    }
 
 
 }
