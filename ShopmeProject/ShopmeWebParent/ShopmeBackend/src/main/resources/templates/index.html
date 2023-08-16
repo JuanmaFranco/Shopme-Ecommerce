@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -7,6 +8,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
 </head>
 
 <body>
@@ -66,6 +69,13 @@
                         <a class="nav-link" th:href="@{/settings}">Settings</a>
                     </li>
 
+                    <li>  <!-- USER ICON -->
+                        <span class="fas fa-user fa-2x icon-silver"></span>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authentication="principal.fullname"></a>
+                    </li>
                 </ul>
             </div>
 
