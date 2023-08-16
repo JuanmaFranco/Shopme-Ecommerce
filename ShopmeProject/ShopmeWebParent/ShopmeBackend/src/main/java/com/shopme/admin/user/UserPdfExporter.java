@@ -57,7 +57,6 @@ public class UserPdfExporter extends AbstractExporter {
 
             document.open();
 
-
             // List of Users text
             Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
             font.setSize(16);
@@ -78,8 +77,6 @@ public class UserPdfExporter extends AbstractExporter {
             document.add(table);
         }
 
-
     }
-
 
 }

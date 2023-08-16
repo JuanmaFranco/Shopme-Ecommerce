@@ -78,13 +78,14 @@
 
     <div>
         <h2 class="mt-2">Manage Users</h2>
-        <a th:href="@{/users/new}">Create New User</a>
+        <a th:href="@{/users/new}" class="fas fa-solid fa-user-plus fa-2x icon-teal" title="Create new User"></a>
         &nbsp;|&nbsp;
-        <a th:href="@{/users/export/csv}">Export to CSV</a>
+        <a th:href="@{/users/export/csv}" class="fas fa-solid fa-file-csv fa-2x icon-teal" title="Export to CSV"></a>
         &nbsp;|&nbsp;
-        <a th:href="@{/users/export/excel}">Export to Excel</a>
+        <a th:href="@{/users/export/excel}" class="fas fa-solid fa-file-excel fa-2x icon-teal"
+           title="Export to Excel"></a>
         &nbsp;|&nbsp;
-        <a th:href="@{/users/export/pdf}">Export to PDF</a>
+        <a th:href="@{/users/export/pdf}" class="fas fa-solid fa-file-pdf fa-2x icon-teal" title="Export to PDF"></a>
     </div>
 
     <div th:if="${message != null}" class="alert alert-success text-center">
@@ -100,31 +101,39 @@
                 <input type="search" name="keyword" class="form-control m-3" th:value="${keyword}" required>
             </label>
             &nbsp;&nbsp;
-            <input type="submit" value="Search" class="btn btn-primary">
+            <button type="submit" value="Search" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+            </button>
             &nbsp;&nbsp;
-            <input type="button" value="Clear" class="btn btn-danger" onclick="clearFilter()">
+            <button type="button" value="Clear" class="btn btn-danger" onclick="clearFilter()">
+                <i class="fas fa-eraser"></i>
+            </button>
         </form>
     </div>
 
-    <div>
+    <div class="full-details">
         <table class="table table-bordered table-striped table-hover table-responsive-xl">
             <thead class="thead-dark">
             <tr>
-                <th th:replace="fragments :: column_link('id', 'User ID')"></th>
+                <th class="hideable-column">
+                    <th th:replace="fragments :: column_link('id', 'User ID', 'tag')"></th>
+                </th>
 
                 <th>
                     Photos
                 </th>
 
-                <th th:replace="fragments :: column_link('email', 'Email')"></th>
+                <th class="hideable-column">
+                    <th th:replace="fragments :: column_link('email', 'Email', 'tag')"></th>
+                </th>
 
-                <th th:replace="fragments :: column_link('firstName', 'First Name')"></th>
+                <th th:replace="fragments :: column_link('firstName', 'First Name', 'none')"></th>
 
-                <th th:replace="fragments :: column_link('lastName', 'Last Name')"></th>
+                <th th:replace="fragments :: column_link('lastName', 'Last Name', 'none')"></th>
 
                 <th>Roles</th>
 
-                <th th:replace="fragments :: column_link('enabled', 'Enabled')"></th>
+                <th th:replace="fragments :: column_link('enabled', 'Enabled', 'none')"></th>
 
                 <th></th>
             </tr>
@@ -132,7 +141,7 @@
 
             <tbody>
             <tr th:each="user : ${users}">
-                <td>[[*{user.id}]]</td>
+                <td class="hideable-column">[[*{user.id}]]</td>
                 <td>
                     <!-- user.photos == null => show portrait -->
                     <span class="fa-solid fa-image-portrait fa-7x icon-silver" th:if="${user.photos == null}"></span>
@@ -140,7 +149,7 @@
                     <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" alt="Profile photo"
                          class="photos"/>
                 </td>
-                <td>[[*{user.email}]]</td>
+                <td class="hideable-column">[[*{user.email}]]</td>
                 <td>[[*{user.firstName}]]</td>
                 <td>[[*{user.lastName}]]</td>
                 <td>[[*{user.roles}]]</td>
@@ -170,6 +179,46 @@
         </table>
     </div>
 
+    <div class="less-details">
+        <div th:each="user : ${users}" class="row m-1">
+            <div class="col-4">
+                <!-- user.photos == null => show portrait -->
+                <span class="fa-solid fa-image-portrait fa-7x icon-silver" th:if="${user.photos == null}"></span>
+                <!-- user.photos != null => show photo -->
+                <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" alt="Profile photo"
+                     class="photos"/>
+            </div>
+
+            <div class="col-8">
+                <div>[[${user.fullName}]]</div>
+                <div>[[${user.roles}]]</div>
+                <div class="mt-2">
+                    <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green"
+                       th:href="@{'/users/' + ${user.id} + '/enabled/false'}" title="Disable this user">
+                    </a>
+                    <a th:if="${user.enabled == false}" class="fas fa-circle fa-2x icon-dark"
+                       th:href="@{'/users/' + ${user.id} + '/enabled/true'}" title="Enable this user">
+                    </a>
+
+                    &nbsp;
+
+                    <a class="fas fa-solid fa-pen-to-square fa-2x icon-green"
+                       th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user">
+                    </a>
+                    &nbsp;
+                    <a class="fas fa-trash fa-2x icon-red link-delete"
+                       th:href="@{'/users/delete/' + ${user.id}}" title="Delete this user"
+                       th:userId="${user.id}">
+                    </a>
+                </div>
+            </div>
+
+            <div>&nbsp;</div>
+
+        </div>
+    </div>
+
+
     <!-- PAGINATION -->
 
     <div class="text-center m-1" th:if="${totalItems > 0}">
@@ -182,7 +231,7 @@
 
     <div th:if="${totalPages > 1}"> <!-- > 1 because if there are 1, 2 or 3 users, pagination shouldn't be displayed -->
         <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
+            <ul class="pagination justify-content-center flex-wrap">
 
                 <!-- FIRST PAGE -->
                 <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
