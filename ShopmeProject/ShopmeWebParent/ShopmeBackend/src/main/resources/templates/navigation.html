@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -72,6 +74,7 @@
                 <li class="nav-item dropdown">  <!-- USER NAME -->
                     <a class="nav-link dropdown-toggle"
                        data-toggle="dropdown"
+                       th:href="@{/account}"
                        sec:authentication="principal.username">
                     </a>
                     <div class="dropdown-menu">

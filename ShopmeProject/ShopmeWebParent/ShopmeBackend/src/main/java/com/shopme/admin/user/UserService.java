@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,6 +50,10 @@ public class UserService {
 
     public List<Role> listRoles() {
         return (List<Role>) roleRepository.findAll();
+    }
+
+    public User getByEmail(String email) {
+        return userRepository.getUserByEmail(email);
     }
 
     public User save(User user) {
@@ -92,6 +97,24 @@ public class UserService {
         }
 
         return true;
+    }
+
+    public User updateAccount(User userInForm) {
+        User userInDB = userRepository.findById(userInForm.getId()).get();
+
+        if (!userInForm.getPassword().isEmpty()) {
+            userInDB.setPassword(userInForm.getPassword());
+            encodePassword(userInDB);
+        }
+
+        if (userInForm.getPhotos() != null) {
+            userInDB.setPhotos(userInForm.getPhotos());
+        }
+
+        userInDB.setFirstName(userInForm.getFirstName());
+        userInDB.setLastName(userInForm.getLastName());
+
+        return userRepository.save(userInDB);
     }
 
     public User get(Integer id) throws UserNotFoundException {
