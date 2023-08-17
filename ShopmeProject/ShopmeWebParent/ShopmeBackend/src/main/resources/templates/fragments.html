@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="ISO-8859-1">
-    <title></title>
+<head th:fragment="page_head(title)">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>[[${title}]]</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}"/>
 </head>
 <body>
 
     <!-- COLUMN_LINK(FIELDNAME, COLUMNLABEL, REMOVETAG) -->
+
     <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
         <a class="text-white"
            th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' +
@@ -18,12 +26,14 @@
     </th>
 
     <!-- PAGE_LINK(PAGENUM, LABEL) -->
+
     <a th:fragment="page_link(pageNum, label)" class="page-link"
        th:href="@{'/users/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
         [[${label}]]
     </a>
 
     <!-- USER_PHOTOS -->
+
     <div th:fragment="user_photos" th:remove="tag">
         <!-- user.photos == null => show portrait -->
         <span class="fa-solid fa-image-portrait fa-7x icon-silver" th:if="${user.photos == null}"></span>
@@ -33,6 +43,7 @@
     </div>
 
     <!-- USER_STATUS -->
+
     <div th:fragment="user_status" th:remove="tag">
         <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green"
            th:href="@{'/users/' + ${user.id} + '/enabled/false'}" title="Disable this user">
@@ -43,6 +54,7 @@
     </div>
 
     <!-- USER ACTIONS  -->
+
     <div th:fragment="user_actions" th:remove="tag">
         <a class="fas fa-solid fa-pen-to-square fa-2x icon-green"
            th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user">
@@ -54,6 +66,12 @@
         </a>
     </div>
 
+
+    <!-- FOOTER -->
+
+    <div th:fragment="footer" class="text-center m-3">
+        <p>Shopme Control Panel - Copyright &copy; Shopme</p>
+    </div>
 
 
 </body>

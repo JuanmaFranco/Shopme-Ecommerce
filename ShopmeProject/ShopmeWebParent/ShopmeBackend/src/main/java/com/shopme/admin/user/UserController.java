@@ -41,9 +41,6 @@ public class UserController {
                              @RequestParam("sortDir") String sortDir,
                              @RequestParam(value = "keyword", required = false) String keyword) {
 
-        System.out.println("Sort field --> " + sortField);
-        System.out.println("Sort dir --> " + sortDir);
-
         Page<User> page = userService.listByPage(pageNum, sortField, sortDir, keyword);
         List<User> users = page.getContent();
 

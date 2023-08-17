@@ -59,7 +59,9 @@ public class WebSecurityConfig implements WebSecurityCustomizer {
         web.ignoring().requestMatchers(
                 "/images/**",
                 "/js/**",
-                "/webjars/**"
+                "/webjars/**",
+                "/style.css",
+                "/fontawesome/**"
         );
     }
 }
