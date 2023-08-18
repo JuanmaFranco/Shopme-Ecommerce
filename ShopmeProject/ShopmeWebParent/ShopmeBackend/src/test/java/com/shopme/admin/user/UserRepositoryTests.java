@@ -65,7 +65,6 @@ public class UserRepositoryTests {
         usersList.forEach(System.out::println);
     }
 
-
     @Test
     public void testGetUserById() {
         Optional<User> userOptional = userRepository.findById(1);
@@ -148,7 +147,6 @@ public class UserRepositoryTests {
 
         assertThat(usersList.size()).isEqualTo(pageSize);
     }
-
 
     @Test
     public void testSearchUsers() {

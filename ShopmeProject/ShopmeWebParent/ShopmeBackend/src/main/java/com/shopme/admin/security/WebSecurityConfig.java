@@ -2,6 +2,7 @@ package com.shopme.admin.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.AbstractRequestMatcherRegistry;
@@ -51,9 +52,19 @@ public class WebSecurityConfig {
                 .permitAll()
         );
 
-        http.authorizeHttpRequests(configurer -> configurer
-                .anyRequest()
-                .authenticated()
+        http.authorizeHttpRequests(customizer -> customizer
+                .requestMatchers("/users/**").hasAuthority("Admin")
+                .requestMatchers("/categories/**").hasAnyAuthority("Admin", "Editor")
+                .requestMatchers("/brands/**").hasAnyAuthority("Admin", "Editor")
+                .requestMatchers("/products/**").hasAnyAuthority("Admin", "Salesperson", "Editor", "Shipper")
+                .requestMatchers("/customers/**").hasAnyAuthority("Admin", "Salesperson")
+                .requestMatchers("/shipping/**").hasAnyAuthority("Admin", "Salesperson")
+                .requestMatchers("/orders/**").hasAnyAuthority("Admin", "Salesperson", "Shipper")
+                .requestMatchers("/report/**").hasAnyAuthority("Admin", "Salesperson")
+                .requestMatchers("/articles/**").hasAnyAuthority("Admin", "Editor")
+                .requestMatchers("/menus/**").hasAnyAuthority("Admin", "Editor")
+                .requestMatchers("/settings/**").hasAuthority("Admin")
+                .anyRequest().authenticated()
         );
 
         http.authenticationProvider(authenticationProvider());
