@@ -22,9 +22,16 @@ public class CategoryController {
     public String listAll(Model model) {
         List<Category> categories = categoryService.listAll();
         model.addAttribute("categories", categories);
-
         return "/categories/categories";
     }
 
+    @GetMapping("/categories/new")
+    public String newCategory(Model model) {
+        List<Category> categoriesList = categoryService.listCategoriesUsedInForm();
+        model.addAttribute("category", new Category());
+        model.addAttribute("categoriesList", categoriesList);
+        model.addAttribute("pageTitle", "Create New Category");
+        return "categories/category_form";
+    }
 
 }
