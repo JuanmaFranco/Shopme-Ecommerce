@@ -106,6 +106,11 @@ public class Category {
         this.children = children;
     }
 
+    @Transient
+    public String getImagePath() {
+        return "/category-images/" + this.id + "/" + this.image;
+    }
+
     public static Category copyIdAndName(Category category) {
         Category copyCategory = new Category();
         copyCategory.setId(category.getId());
@@ -116,6 +121,22 @@ public class Category {
     public static Category copyIdAndName(Integer id, String name) {
         Category copyCategory = new Category();
         copyCategory.setId(id);
+        copyCategory.setName(name);
+        return copyCategory;
+    }
+
+    public static Category copyFull(Category category) {
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        copyCategory.setImage(category.getImage());
+        copyCategory.setEnabled(category.isEnabled());
+        copyCategory.setAlias(category.getAlias());
+        return copyCategory;
+    }
+
+    public static Category copyFull(Category category, String name) {
+        Category copyCategory = Category.copyFull(category);
         copyCategory.setName(name);
         return copyCategory;
     }

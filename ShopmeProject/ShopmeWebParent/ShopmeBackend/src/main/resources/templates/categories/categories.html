@@ -56,7 +56,9 @@
             <tbody>
                 <tr th:each="category : ${categories}">
                     <td>[[${category.id}]]</td>
-                    <td></td>  <!-- Image -->
+                    <td>   <!-- Image -->
+                        <img th:src="@{${category.imagePath}}" class="img-fluid photos" alt="Category Image">
+                    </td>
                     <td>[[${category.name}]]</td>
                     <td>[[${category.alias}]]</td>
                     <td>

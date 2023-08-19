@@ -10,9 +10,11 @@ import java.nio.file.Paths;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
+    // expose directory in the file system to be accesible by the clients
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // expose directory in the file system to be accesible by the clients
+
+        // user-photos
         String dirName = "user-photos";
         Path userPhotosDir = Paths.get(dirName);
 
@@ -20,5 +22,16 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/" + dirName + "/**")
                 .addResourceLocations("file:/" + userPhotosPath + "/");
+
+        // category-images
+        String categoryImagesDirName = "../category-images";
+        Path categoryImagesDir = Paths.get(categoryImagesDirName);
+
+        String categoryImagesPath = categoryImagesDir.toFile().getAbsolutePath();
+
+        registry.addResourceHandler("/category-images/**")
+                .addResourceLocations("file:/" + categoryImagesPath + "/");
     }
+
+
 }
