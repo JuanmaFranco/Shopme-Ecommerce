@@ -13,12 +13,15 @@
 </head>
 <body>
 
+<!----------------------------------------  USERS ------------------------------------------>
+
+
     <!-- COLUMN_LINK(FIELDNAME, COLUMNLABEL, REMOVETAG) -->
 
     <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
         <a class="text-white"
            th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' +
-           ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+               ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
             [[${columnLabel}]]
         </a>
         <span th:if="${sortField == fieldName}"
@@ -71,6 +74,33 @@
 
     <div th:fragment="footer" class="text-center m-3">
         <p>Shopme Control Panel - Copyright &copy; Shopme</p>
+    </div>
+
+
+<!----------------------------------------  CATEGORIES ------------------------------------------>
+
+    <!-- CATEGORY_STATUS -->
+
+    <div th:fragment="category_status" th:remove="tag">
+        <a th:if="${category.enabled == true}" class="fas fa-check-circle fa-2x icon-green"
+           th:href="@{'/categories/' + ${category.id} + '/enabled/false'}" title="Disable this category">
+        </a>
+        <a th:if="${category.enabled == false}" class="fas fa-circle fa-2x icon-dark"
+           th:href="@{'/categories/' + ${category.id} + '/enabled/true'}" title="Enable this category">
+        </a>
+    </div>
+
+    <!-- CATEGORY ACTIONS  -->
+
+    <div th:fragment="category_actions" th:remove="tag">
+        <a class="fas fa-solid fa-pen-to-square fa-2x icon-green"
+           th:href="@{'/categories/edit/' + ${category.id}}" title="Edit this category">
+        </a>
+        &nbsp;
+        <a class="fas fa-trash fa-2x icon-red link-delete"
+           th:href="@{'/categories/delete/' + ${category.id}}" title="Delete this category"
+           th:userId="${category.id}">
+        </a>
     </div>
 
 
