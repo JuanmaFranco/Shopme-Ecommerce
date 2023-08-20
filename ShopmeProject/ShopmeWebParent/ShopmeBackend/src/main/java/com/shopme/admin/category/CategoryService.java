@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -108,6 +109,14 @@ public class CategoryService {
             categoriesUsedInForm.add(Category.copyIdAndName(subcategory.getId(), name));
 
             listSubcategoriesUsedInForm(categoriesUsedInForm, subcategory, newSubLevel);
+        }
+    }
+
+    public Category get(Integer id) throws CategoryNotFoundException {
+        try {
+            return categoryRepository.findById(id).get();
+        } catch (NoSuchElementException e) {
+            throw new CategoryNotFoundException("Could not find any category with ID: " + id);
         }
     }
 
