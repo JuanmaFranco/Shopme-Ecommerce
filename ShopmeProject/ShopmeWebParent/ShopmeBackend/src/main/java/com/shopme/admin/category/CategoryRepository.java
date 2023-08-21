@@ -15,6 +15,6 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     // returns one category because name is unique
     Category findByName(String name);
 
-    // returns one alias because name is unique
+    // returns one category because alias is unique
     Category findByAlias(String alias);
 }
