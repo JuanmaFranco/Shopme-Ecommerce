@@ -30,7 +30,7 @@ public class FileUploadUtil {
         }
     }
 
-    public static void cleanDir(String dir) throws IOException {
+    public static void cleanDir(String dir) {
         Path dirPath = Paths.get(dir);
 
         try (Stream<Path> filesStream = Files.list(dirPath)) {  // try-with-resources
@@ -46,5 +46,15 @@ public class FileUploadUtil {
         } catch (IOException ioException) {
             LOGGER.error("Could not list directory: " + dirPath);
         }
+    }
+
+    public static void removeDir(String dir) {
+        cleanDir(dir);
+        try {
+            Files.delete(Paths.get(dir));
+        } catch (IOException e) {
+            LOGGER.error("Could not remove directory: " + dir);
+        }
+
     }
 }

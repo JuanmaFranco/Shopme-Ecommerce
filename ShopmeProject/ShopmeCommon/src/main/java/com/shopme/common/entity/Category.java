@@ -25,6 +25,9 @@ public class Category {
 
     private boolean enabled;
 
+    @Transient
+    private boolean hasChildren;
+
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category parent;
@@ -112,6 +115,14 @@ public class Category {
         this.children = children;
     }
 
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
+    }
+
     @Transient
     public String getImagePath() {
 
@@ -143,6 +154,7 @@ public class Category {
         copyCategory.setImage(category.getImage());
         copyCategory.setEnabled(category.isEnabled());
         copyCategory.setAlias(category.getAlias());
+        copyCategory.setHasChildren(!category.getChildren().isEmpty());
         return copyCategory;
     }
 
