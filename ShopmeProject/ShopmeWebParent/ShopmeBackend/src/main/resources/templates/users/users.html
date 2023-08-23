@@ -22,7 +22,7 @@
         <a th:href="@{/users/export/pdf}" class="fas fa-solid fa-file-pdf fa-2x icon-teal" title="Export to PDF"></a>
     </div>
 
-    <div th:if="${message != null}" class="alert alert-success text-center">
+    <div th:if="${message != null}" class="alert alert-success text-center mt-3">
         [[${message}]]
     </div>
 
@@ -122,49 +122,7 @@
         </div>
     </div>
 
-
-    <!-- PAGINATION -->
-
-    <div class="text-center m-1" th:if="${totalItems > 0}">
-        <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
-    </div>
-
-    <div class="text-center m-1" th:unless="${totalItems > 0}">
-        <span>No users found</span>
-    </div>
-
-    <div th:if="${totalPages > 1}"> <!-- > 1 because if there are 1, 2 or 3 users, pagination shouldn't be displayed -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center flex-wrap">
-
-                <!-- FIRST PAGE -->
-                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(1, 'First')}"></a>
-                </li>
-
-                <!-- PREVIOUS PAGE -->
-                <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${currentPage - 1}, 'Previous')}"></a>
-                </li>
-
-                <li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
-                    th:each="i : ${#numbers.sequence(1, totalPages)}">
-                    <a th:replace="~{fragments :: page_link(${i}, ${i})}"></a>
-                </li>
-
-                <!-- NEXT PAGE -->
-                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${currentPage + 1}, 'Next')}"></a>
-                </li>
-
-                <!-- LAST PAGE -->
-                <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                    <a th:replace="~{fragments :: page_link(${totalPages}, 'Last')}"></a>
-                </li>
-
-            </ul>
-        </nav>
-    </div>
+    <div th:replace="~{fragments :: pagination('/users', 'users')}"></div>
 
     <div th:replace="~{modal_fragments :: confirm_modal}"></div>
 
