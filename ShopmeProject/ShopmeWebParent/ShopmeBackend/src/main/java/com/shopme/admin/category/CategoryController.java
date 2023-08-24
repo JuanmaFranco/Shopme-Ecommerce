@@ -1,7 +1,6 @@
 package com.shopme.admin.category;
 
 import com.shopme.admin.FileUploadUtil;
-import com.shopme.admin.user.UserService;
 import com.shopme.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,21 +29,23 @@ public class CategoryController {
     @GetMapping("/categories")
     public String listFirstPage(@RequestParam(value = "sortDir", required = false) String sortDir,
                                 Model model) {
-        return listByPage(1, sortDir, model);
+        return listByPage(1, sortDir, null, model);
     }
 
     @GetMapping("/categories/page/{pageNum}")
     public String listByPage(@PathVariable("pageNum") int pageNum,
                              @RequestParam(value = "sortDir", required = false) String sortDir,
+                             @RequestParam(value = "keyword", required = false) String keyword,
                              Model model) {
 
         if (sortDir == null || sortDir.isEmpty()) {
             sortDir = "asc";
         }
 
-        CategoryPageInfo pageInfo = new CategoryPageInfo();
-        List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortDir);
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        CategoryPageInfo pageInfo = new CategoryPageInfo();
+        List<Category> categories = categoryService.listByPage(pageInfo, pageNum, sortDir, keyword);
 
         long startCount = (long) (pageNum - 1) * CategoryService.ROOT_CATEGORIES_PER_PAGE + 1;
         long endCount = startCount + CategoryService.ROOT_CATEGORIES_PER_PAGE - 1;
@@ -62,6 +63,7 @@ public class CategoryController {
         model.addAttribute("categories", categories);
         model.addAttribute("sortField", "name");
         model.addAttribute("sortDir", sortDir);
+        model.addAttribute("keyword", keyword);
 
         return "/categories/categories";
     }
@@ -130,7 +132,6 @@ public class CategoryController {
 
     @GetMapping("/categories/delete/{id}")
     public String deleteCategory(@PathVariable(name = "id") Integer id,
-                                 Model model,
                                  RedirectAttributes redirectAttributes) {
         try {
             categoryService.deleteById(id);

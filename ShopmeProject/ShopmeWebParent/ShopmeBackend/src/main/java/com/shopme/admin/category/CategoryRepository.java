@@ -19,6 +19,9 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     @Query("SELECT c FROM Category c WHERE c.parent.id IS NULL")
     Page<Category> findRootCategories(Pageable pageable);
 
+    @Query("SELECT c FROM Category c WHERE c.name LIKE %?1%")
+    Page<Category> search(String keyword, Pageable pageable);
+
     // returns one category because name is unique
     Category findByName(String name);
 
@@ -29,5 +32,5 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
     @Modifying
     void updateEnabledStatus(Integer id, boolean enabled);
 
-    public Long countById(Integer id);
+    Long countById(Integer id);
 }

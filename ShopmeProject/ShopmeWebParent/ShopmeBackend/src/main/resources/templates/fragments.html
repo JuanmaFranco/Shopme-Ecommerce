@@ -157,6 +157,27 @@
 </div>
 
 
+<!-- SEARCH -->
+<div th:fragment="search_form(moduleURL)">
+
+<form th:action="@{${moduleURL}}" class="form-inline mt-3 mb-3">
+    <input type="hidden" name="sortField" th:value="${sortField}" />
+    <input type="hidden" name="sortDir" th:value="${sortDir}" />
+
+    Filter:&nbsp;
+    <input type="search" name="keyword" th:value="${keyword}" class="form-control" required>
+    &nbsp;&nbsp;
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-search"></i>
+    </button>
+    &nbsp;&nbsp;
+    <button type="button" class="btn btn-danger" onclick="clearFilter()">
+        <i class="fas fa-eraser"></i>
+    </button>
+</form>
+
+</div>
+
 </body>
 </html>
 

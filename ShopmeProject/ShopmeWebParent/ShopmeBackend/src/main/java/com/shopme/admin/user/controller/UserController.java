@@ -42,9 +42,13 @@ public class UserController {
 
     @GetMapping("/users/page/{pageNum}")
     public String listByPage(@PathVariable("pageNum") int pageNum, Model model,
-                             @RequestParam("sortField") String sortField,
-                             @RequestParam("sortDir") String sortDir,
+                             @RequestParam(value = "sortField", required = false) String sortField,
+                             @RequestParam(value = "sortDir", required = false) String sortDir,
                              @RequestParam(value = "keyword", required = false) String keyword) {
+
+        if (sortField != null && sortField.equals("null")) {
+            sortField = "firstName"; // You can set any default sorting field here
+        }
 
         Page<User> page = userService.listByPage(pageNum, sortField, sortDir, keyword);
         List<User> users = page.getContent();
@@ -126,7 +130,7 @@ public class UserController {
     }
 
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+    public String deleteUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             userService.delete(id);
             redirectAttributes.addFlashAttribute("message",
