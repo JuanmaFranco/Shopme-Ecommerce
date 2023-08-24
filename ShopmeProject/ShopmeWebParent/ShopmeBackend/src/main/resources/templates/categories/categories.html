@@ -39,7 +39,7 @@
                     </a>
                     <span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
                 </th>
-                <th>Alias</th>
+                <th class="hideable-column">Alias</th>
                 <th>Enabled</th>
                 <th></th>
             </tr>
@@ -52,7 +52,7 @@
                     <img th:src="@{${category.imagePath}}" class="img-fluid photos" alt="Category Image">
                 </td>
                 <td>[[${category.name}]]</td>
-                <td>[[${category.alias}]]</td>
+                <td class="hideable-column">[[${category.alias}]]</td>
                 <td>
                     <div th:replace="~{fragments :: category_status}"></div>
                 </td>
@@ -63,6 +63,27 @@
             </tbody>
 
         </table>
+    </div>
+
+    <div class="less-details">
+        <div th:each="category : ${categories}" class="row m-1">
+
+            <div class="col-4">
+                <img th:src="@{${category.imagePath}}" class="img-fluid photos" alt="Category Image">
+            </div>
+
+            <div class="col-8">
+                <div>[[${category.name}]]</div>
+                <div class="mt-2">
+                    <div th:replace="~{fragments :: category_status}"></div>
+                    &nbsp;
+                    <div th:replace="~{fragments :: category_actions}"></div>
+                </div>
+            </div>
+
+            <div>&nbsp;</div>
+
+        </div>
     </div>
 
     <div th:if="${keyword != null}" class="text-center">
