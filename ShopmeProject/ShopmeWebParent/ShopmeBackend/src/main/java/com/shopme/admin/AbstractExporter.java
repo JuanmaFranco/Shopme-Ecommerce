@@ -1,4 +1,4 @@
-package com.shopme.admin.user.export;
+package com.shopme.admin;
 
 import com.shopme.common.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,12 +12,12 @@ public class AbstractExporter {
 
     public void setResponseHeader(HttpServletResponse response,
                                   String contentType,
-                                  String extension) throws IOException {
+                                  String extension, String prefix) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         LocalDateTime date = LocalDateTime.now();
         String timeStamp = date.format(formatter);
 
-        String fileName = "users_" + timeStamp + extension;
+        String fileName = prefix + timeStamp + extension;
 
         response.setContentType(contentType);
 
