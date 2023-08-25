@@ -130,7 +130,7 @@ public class UserRepositoryTests {
 
     @Test
     public void testEnableUser() {
-        Integer id = 25;
+        Integer id = 1;
         userRepository.updateEnabledStatus(id, true);
     }
 
