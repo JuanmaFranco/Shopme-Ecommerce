@@ -163,4 +163,9 @@ public class Category {
         copyCategory.setName(name);
         return copyCategory;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
