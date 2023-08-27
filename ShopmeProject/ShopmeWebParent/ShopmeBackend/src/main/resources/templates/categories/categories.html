@@ -88,11 +88,14 @@
     <th:block th:unless="${keyword != null}">
         <div th:replace="~{fragments :: pagination('/categories', 'top-level categories')}"></div>
     </th:block>
+
+    <div th:replace="~{modal_fragments :: confirm_modal}"></div>
+
+    <div th:replace="~{fragments :: footer}"></div>
+
 </div>
 
-<div th:replace="~{modal_fragments :: confirm_modal}"></div>
 
-<div th:replace="~{fragments :: footer}"></div>
 
 
 <script th:src="@{/js/common_list.js}"></script>
