@@ -15,7 +15,8 @@
     </div>
 
     <form th:action="@{/brands/save}" method="post" style="max-width: 900px; margin: 0 auto"
-          th:object="${brand}" enctype="multipart/form-data">
+          th:object="${brand}" enctype="multipart/form-data"
+          onsubmit="return checkUnique(this)">
         <input type="hidden" th:field="*{id}">
         <div class="border border-secondary rounded p-3">
 
@@ -49,7 +50,8 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Select one or more categories: </label>
                 <div class="col-sm-8">
-                    <select class="form-control" th:field="*{categories}" multiple required style="resize: vertical; height: 200px">
+                    <select class="form-control" th:field="*{categories}" multiple required
+                            style="resize: vertical; height: 200px">
                         <th:block th:each="category : ${categories}">
                             <option th:value="${category.id}">[[${category.name}]]</option>
                         </th:block>
@@ -102,7 +104,7 @@
     });
 
     function showChosenCategories() {
-        dropdownCategories.children("option:selected").each(function() {
+        dropdownCategories.children("option:selected").each(function () {
             const selectedCategory = $(this);
             const categoryId = selectedCategory.val();
             const categoryName = selectedCategory.text().replace(/-/g, "");
@@ -111,10 +113,38 @@
         });
     }
 
+    function checkUnique(form) {
+        let brandId = $("#id").val();
+        let brandName = $("#name").val();
+
+        let csrfValue = $("input[name='_csrf']").val();
+
+        let url = "[[@{/brands/check_unique}]]";
+
+        let params = {id: brandId, name: brandName, _csrf: csrfValue};
+
+        $.post(url, params, function (response) {
+            if (response === "OK") {
+                form.submit();
+            } else if (response === "DuplicatedName") {
+                showWarningModal("There is another brand having same name " + brandName);
+
+            } else {
+                showErrorModal("Unknown response from server");
+            }
+
+        }).fail(function () {
+            showErrorModal("Could not connect to the server");
+        });
+
+
+        return false;
+    }
+
 
 </script>
 
-<script type="text/javascript" th:src="@{/js/common_form.js}"> </script>
+<script type="text/javascript" th:src="@{/js/common_form.js}"></script>
 
 </body>
 

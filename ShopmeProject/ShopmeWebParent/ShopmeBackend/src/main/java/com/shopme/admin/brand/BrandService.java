@@ -1,6 +1,7 @@
 package com.shopme.admin.brand;
 
 import com.shopme.common.entity.Brand;
+import com.shopme.common.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,23 @@ public class BrandService {
             throw new BrandNotFoundException("Could not find any brand with ID " + id);
         }
         brandRepository.deleteById(id);
+    }
+
+    public String checkUnique(Integer id, String name) {
+        boolean isCreatingNew = (id == null || id == 0);
+        Brand brandByName = brandRepository.findByName(name);
+
+        if (isCreatingNew) { // create mode
+            if (brandByName != null) {
+                return "DuplicatedName";
+            }
+        } else {  // editing mode
+            if (brandByName != null && !brandByName.getId().equals(id)) {
+                return "DuplicatedName";
+            }
+        }
+
+        return "OK";
     }
 
 }
